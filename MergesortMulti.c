@@ -1,3 +1,12 @@
+// *multi-thread mergesort
+// * purpose: sort the array by mergesort algorithm to accelerate the speed
+// * main idea: divide the array into two parts, and use multi-thread to sort the two parts respectively
+// * then merge the two parts
+// * the length of the array is greater than min_diff, then use multi-thread
+// * the length of the array is less than min_diff, then use single-thread
+// * the min_diff is the minimum length of the array that can be sorted by multi-thread
+// * the min_diff is the second parameter of the program
+// * if the min_diff is not given, then the default value is 100000
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,12 +29,17 @@ int *read_array(int *n) {
     fscanf(file, "%d", n);
     int *array = (int *)malloc((*n) * sizeof(int));
     for (int i = 0; i < (*n); i++) {
-        fscanf(file, "%d", &array[i]);
+        if (fscanf(file, "%d", &array[i]) == EOF) {
+            printf("Error reading file\n");
+            free(array);
+            fclose(file);
+            exit(1);
+            return NULL;
+        }
     }
     fclose(file);
     return array;
 }
-
 void write_array(int *array, int n) {
     FILE *file = fopen("/home/illusionary/文档/c++_code/pthread_mergesort/data.out", "w");
     if (file == NULL) {

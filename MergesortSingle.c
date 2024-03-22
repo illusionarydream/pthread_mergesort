@@ -1,3 +1,5 @@
+// *Mergesort with single thread
+// *purpose: sort the array with mergesort algorithm and set as a contrast to the multi-thread mergesort
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,7 +13,13 @@ int *read_array(int *n) {
     fscanf(file, "%d", n);
     int *array = (int *)malloc((*n) * sizeof(int));
     for (int i = 0; i < (*n); i++) {
-        fscanf(file, "%d", &array[i]);
+        if (fscanf(file, "%d", &array[i]) == EOF) {
+            printf("Error reading file\n");
+            free(array);
+            fclose(file);
+            exit(1);
+            return NULL;
+        }
     }
     fclose(file);
     return array;
