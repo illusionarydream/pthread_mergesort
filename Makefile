@@ -1,19 +1,16 @@
 CC=gcc
-CFLAGS=-I.
-DEPS = MergesortMulti.h MergesortSingle.h
-OBJ_MULTI = MergesortMulti.o 
-OBJ_SINGLE = MergesortSingle.o
+CFLAGS=-Wall -pthread
+TARGETS = MergesortMulti MergesortSingle
 
-%.o: %.c $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
+all: $(TARGETS)
 
-MergesortMulti: $(OBJ_MULTI)
-	$(CC) -o $@ $^ $(CFLAGS)
+MergesortSingle: MergesortSingle.c
+	$(CC) $(CFLAGS) -o $@ $^
 
-MergesortSingle: $(OBJ_SINGLE)
-	$(CC) -o $@ $^ $(CFLAGS)
+MergesortMulti: MergesortMulti.c
+	$(CC) $(CFLAGS) -o $@ $^
 
 .PHONY: clean
 
 clean:
-	rm -f $(OBJ_MULTI) $(OBJ_SINGLE) MergesortMulti MergesortSingle *.o
+	rm -f $(TARGETS)
